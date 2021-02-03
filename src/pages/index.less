@@ -1,0 +1,67 @@
+@import '~antd/dist/antd.less'; // 引入官方提供的 less 样式入口文件
+
+body {
+  overflow: auto;
+  margin: 16px 24px;
+  height: calc(100vh - 32px);
+  width: calc(100vw - 48px);
+  font-size: 14px;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', sans-serif;
+  background: #f2f4f7;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+}
+
+.result-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 12px;
+  width: 100%;
+  height: 500px;
+  padding: 12px;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+}
+
+.toolbar {
+  display: flex;
+  position: relative;
+
+  > div {
+    display: inline-block;
+  }
+
+  > div:not(:first-of-type) {
+    margin-left: 12px;
+  }
+
+  .component-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    margin-right: 8px;
+  }
+
+  .small-tips {
+    font-size: 8px;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.append-action {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  cursor: pointer;
+  position: absolute;
+  right: 40px;
+  padding: 0 4px;
+}
