@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import { useRef } from 'react';
 import * as _ from 'lodash';
-import { getStarHistory } from '../utils/getStarHistory';
+import { getStarHistory } from '../utils/get-star-history';
 
 type Data = {
   dailyStarHistory: any[];

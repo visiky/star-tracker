@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
-import { copyToClipboard } from '../utils/copytoboard';
+import { copyToClipboard } from '../utils/copy-to-board';
 
 const KEY = 'personal_github_token';
 

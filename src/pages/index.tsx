@@ -1,13 +1,14 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Select, Spin, Tabs, Popover, Input, InputNumber } from 'antd';
+import { Select, Spin, Tabs, Popover, InputNumber } from 'antd';
 import * as _ from 'lodash';
 import axios, { CancelTokenSource } from 'axios';
 import Layout from '../layouts/layout';
 import Line from '../components/line';
-import Detail from '../components/Detail';
-import { useToken } from '../hooks/useToken';
-import { useFetchData } from '../hooks/useFetchData';
-import { useReposity } from '../hooks/useReposity';
+import Detail from '../components/detail-page';
+import { TokenModal } from '../components/token-modal';
+import { useToken } from '../hooks/use-token';
+import { useFetchData } from '../hooks/use-fetch-data';
+import { useReposity } from '../hooks/use-reposity';
 
 import './index.less';
 
@@ -27,11 +28,15 @@ const Page = () => {
   const [fetchData] = useFetchData();
 
   /**
+   * token 编辑弹窗
+   */
+  const [tokenModalVisible, setTokenModalVisible] = useState(false);
+
+  /**
    * 获取仓库可选项
    */
   const [REPOSITIES, addRepo, removeRepo] = useReposity();
 
-  const inputRef = useRef<Input>();
   const queryToken = useRef<CancelTokenSource>();
 
   /** 仓库名 */
@@ -86,10 +91,8 @@ const Page = () => {
   };
 
   /** 保存 toekn */
-  const handleSaveToken = e => {
-    saveToken(e.target.value as string);
-    // 保存成功后，清空输入框内容
-    inputRef?.current?.setValue('');
+  const handleSaveToken = (v: string) => {
+    saveToken(v);
   };
 
   const lineData = useMemo(() => {
@@ -100,36 +103,14 @@ const Page = () => {
     <Layout>
       <Tabs
         type="card"
+        className="full"
         tabBarExtraContent={{
           right: (
-            <div>
-              <Input
-                ref={inputRef}
-                onPressEnter={handleSaveToken}
-                placeholder="enter access token"
-                addonAfter={
-                  <span style={{ cursor: 'pointer' }} onClick={copyToken}>
-                    Copy token
-                    <Popover
-                      title="Get personal token"
-                      content={
-                        <span
-                          className="small-tips"
-                          onClick={e => e.stopPropagation()}
-                        >
-                          <a href="https://github.com/settings/tokens">
-                            https://github.com/settings/tokens
-                          </a>
-                        </span>
-                      }
-                      overlayStyle={{ maxWidth: '320px' }}
-                      placement="topLeft"
-                    >
-                      <span style={{ paddingLeft: '8px' }}>💡</span>
-                    </Popover>
-                  </span>
-                }
-              />
+            <div
+              onClick={() => setTokenModalVisible(true)}
+              style={{ cursor: 'pointer' }}
+            >
+              Edit access token
             </div>
           ),
         }}
@@ -141,7 +122,12 @@ const Page = () => {
               Trend with line
               <Popover
                 title={
-                  <div>Tips: <a href="https://docs.github.com/en/rest/reference/rate-limit">Rate limit for github API</a></div>
+                  <div>
+                    Tips:{' '}
+                    <a href="https://docs.github.com/en/rest/reference/rate-limit">
+                      Rate limit for github API
+                    </a>
+                  </div>
                 }
                 content={
                   <ul className="small-tips" onClick={e => e.stopPropagation()}>
@@ -198,7 +184,7 @@ const Page = () => {
                           removeRepo(opt);
                         }}
                       >
-                        remove from options
+                        remove
                       </span>
                     </div>
                   </Option>
@@ -278,9 +264,21 @@ const Page = () => {
           }
           key="2"
         >
-          <Detail repos={repos} sourceData={metaData} />
+          <Detail
+            repos={repos}
+            sourceData={metaData}
+            className="detail-result"
+          />
         </Tabs.TabPane>
       </Tabs>
+      <TokenModal
+        visible={tokenModalVisible}
+        onCancel={() => setTokenModalVisible(false)}
+        onEditOk={v => {
+          handleSaveToken(v);
+          setTokenModalVisible(false);
+        }}
+      />
     </Layout>
   );
 };

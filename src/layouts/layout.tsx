@@ -8,6 +8,7 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import Header from './header';
+import Footer from './footer';
 import './layout.less';
 
 const Layout: React.FC = ({ children }) => {
@@ -17,18 +18,26 @@ const Layout: React.FC = ({ children }) => {
         siteMetadata {
           title
           githubUrl
+          author
+          contact
+          wechat
         }
       }
     }
   `);
 
+  const { title, githubUrl, contact, author, wechat } = data.site.siteMetadata;
+
   return (
     <>
-      <Header
-        siteTitle={data.site.siteMetadata?.title || `Title`}
-        githubUrl={data.site.siteMetadata?.githubUrl || ''}
-      />
+      <Header siteTitle={title} />
       <main style={{ marginBottom: '24px' }}>{children}</main>
+      <Footer
+        author={author}
+        githubUrl={githubUrl}
+        contact={contact}
+        wechat={wechat}
+      />
     </>
   );
 };

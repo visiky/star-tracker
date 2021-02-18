@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Select, Radio, DatePicker } from 'antd';
 import _ from 'lodash';
+import cx from 'classnames';
 import Waterfall from './waterfall';
 import { isAfter } from '../utils/date';
 
@@ -10,6 +11,7 @@ const { Option } = Select;
 type Props = {
   repos: string[];
   sourceData?: Record<string, { date: string; starNum: number }[]>;
+  className?: string;
 };
 
 function filterData(data, range) {
@@ -19,7 +21,7 @@ function filterData(data, range) {
   });
 }
 
-const Detail: React.FC<Props> = ({ repos, sourceData }) => {
+const Detail: React.FC<Props> = ({ repos, sourceData, className }) => {
   /** 日期范围 */
   const [dateRange, setDateRange] = useState<string[]>([]);
 
@@ -93,7 +95,7 @@ const Detail: React.FC<Props> = ({ repos, sourceData }) => {
           />
         </div>
       </div>
-      <div className="result-wrapper">
+      <div className={cx('result-wrapper', className)}>
         {waterfallData.length ? (
           <Waterfall
             className="full"
